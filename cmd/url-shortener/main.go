@@ -4,6 +4,8 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/israpilovsha/url-shortener/internal/config"
 	"github.com/israpilovsha/url-shortener/internal/lib/logger/sl"
 	"github.com/israpilovsha/url-shortener/internal/storage/sqlite"
@@ -31,8 +33,11 @@ func main() {
 		log.Error("failed to init storage", sl.Err(err))
 		os.Exit(1)
 	}
-
 	_ = storage
+	router := chi.NewRouter()
+
+	//middleware
+	router.Use(middleware.RequestID)
 
 	// TODO: init router: chi, "chi render"
 
